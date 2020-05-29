@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from data_acquisition.db_funcs import create_table, delete_table, \
+from data_acquisition.functions.db_funcs import create_table, delete_table, \
     update_table, read_from_table
 
 
@@ -15,9 +15,9 @@ Offers, engine = create_table(Base)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-values = {"id": 12223, "price": 10000, "prod_year": 2004, "mileage": 30000,
+values = {"id": 162433, "price": 10000, "prod_year": 2004, "mileage": 30000,
           "fuel": "benzyna", "color": "czarny", "brand": "Ford",
-          "crashed": bool(1),
+          "model": "model", "link": "www",
           "offer_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
           "scraping_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
           "overall": 0}
@@ -31,8 +31,8 @@ except:
 # 3. Read from database
 session = Session()
 db_output = read_from_table(session, Offers, "age", 3)
-
+print(db_output)
 
 # 4. Delete table
-# delete_table(session, Offers, engine)
+delete_table(session, Offers, engine)
 
