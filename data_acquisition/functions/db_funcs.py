@@ -1,10 +1,12 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, \
+    Numeric
 
 
 def create_table(base):
     class Offers(base):
         __tablename__ = "Offers"
-        offer_id = Column("id", String, unique=True, primary_key=True)
+        row_id = Column(Integer, primary_key=True, autoincrement=True)
+        offer_id = Column("id", String, unique=False, primary_key=False)
         price = Column("Price", Integer)
         prod_year = Column("Year", String)
         mileage = Column("Mileage", Integer)
@@ -13,6 +15,8 @@ def create_table(base):
         brand = Column("Brand", String)
         model = Column("Model", String)
         link = Column("Link", String)
+        longitude = Column("Longitude", Numeric)
+        latitude = Column("Latitude", Numeric)
         offer_timestamp = Column("Offer timestamp", DateTime)
         scraping_timestamp = Column("Scraping timestamp", DateTime)
         overall = Column("Overall rating", Integer)
@@ -43,6 +47,8 @@ def update_table(session, offer_class, values):
     offer.brand = values["brand"]
     offer.model = values["model"]
     offer.link = values["link"]
+    offer.longitude = values["longitude"]
+    offer.latitude = values["latitude"]
     offer.offer_timestamp = values["offer_timestamp"]
     offer.scraping_timestamp = values["scraping_timestamp"]
     offer.overall = values["overall"]

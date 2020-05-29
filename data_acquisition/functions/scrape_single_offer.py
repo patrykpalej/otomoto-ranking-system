@@ -38,6 +38,9 @@ def scrape_single_offer(url):
     model = offer_soup.find_all("a", class_="offer-params__link")[3].text\
         .replace(' ',  '').replace('\n', '')
 
+    longitude = offer_soup.find("input", id="adMapData")['data-map-lon']
+    latitude = offer_soup.find("input", id="adMapData")['data-map-lat']
+
     pre_offer_timestamp = offer_soup.find_all(
         "span", class_="offer-meta__value")[0].text
     month_int_dict = {"sty": 1, "lut": 2, "mar": 3, "kwi": 4, "maj": 5,
@@ -47,7 +50,6 @@ def scrape_single_offer(url):
     month = month_int_dict[pre_offer_timestamp[9:12]] \
         if pre_offer_timestamp[8] == ' ' else \
         month_int_dict[pre_offer_timestamp[10:13]]
-
     day = int(pre_offer_timestamp[7:9])
     hour = int(pre_offer_timestamp[:2])
     minute = int(pre_offer_timestamp[3:5])
@@ -56,5 +58,6 @@ def scrape_single_offer(url):
     return {"id": offer_id, "price": price, "prod_year": prod_year,
             "mileage": mileage, "fuel": fuel, "color": color,
             "brand": brand, "model": model, "link": url,
+            "longitude": longitude, "latitude": latitude,
             "offer_timestamp": offer_timestamp, "overall": 0,
             "scraping_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
