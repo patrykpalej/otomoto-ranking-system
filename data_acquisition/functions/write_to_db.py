@@ -1,7 +1,11 @@
 from data_acquisition.functions.db_funcs import update_table
 
 
-def write_to_db(session, offer_class, offers):
+def write_to_db(session_class, offer_class, offers):
 
     for offer in offers:
-        update_table(session, offer_class, offer)
+        try:
+            session = session_class()
+            update_table(session, offer_class, offer)
+        except:
+            pass

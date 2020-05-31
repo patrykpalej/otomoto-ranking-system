@@ -5,8 +5,8 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, \
 def create_table(base):
     class Offers(base):
         __tablename__ = "Offers"
-        row_id = Column(Integer, primary_key=True, autoincrement=True)
-        offer_id = Column("id", String, unique=False, primary_key=False)
+        # row_id = Column(Integer, primary_key=True, autoincrement=True)
+        offer_id = Column("id", String, unique=False, primary_key=True)
         price = Column("Price", Integer)
         prod_year = Column("Year", String)
         mileage = Column("Mileage", Integer)
@@ -58,7 +58,7 @@ def update_table(session, offer_class, values):
     session.close()
 
 
-def read_from_table(session, offer_class, where_column, where_value):
+def read_from_table(session, offer_class):
     output = session.query(offer_class).all()  #filter_by().all()
     session.close()
 
