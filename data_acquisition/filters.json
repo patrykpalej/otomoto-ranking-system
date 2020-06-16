@@ -1,3 +1,4 @@
+[
 {
   "max_distance": 30,
   "brand": "",
@@ -12,4 +13,21 @@
   "has_vin": "1",
   "damaged": "0",
   "no_accident": "1"	
+},
+
+{
+  "max_distance": 30,
+  "brand": "",
+  "model": "",
+  "min_price": "10000",
+  "max_price": "30000",
+  "min_year": "2012",
+  "max_year": "2015",
+  "min_mileage": "40000",
+  "max_mileage": "90000",
+  "fuel_type": "petrol-lpg",
+  "has_vin": "1",
+  "damaged": "0",
+  "no_accident": "1"	
 }
+]
