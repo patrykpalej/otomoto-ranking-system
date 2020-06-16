@@ -19,7 +19,7 @@ def create_table(base):
         latitude = Column("Latitude", Numeric)
         offer_timestamp = Column("Offer timestamp", DateTime)
         scraping_timestamp = Column("Scraping timestamp", DateTime)
-        overall = Column("Overall rating", Integer)
+        overall = Column("Overall rating", Numeric)
 
     engine = create_engine("postgresql+psycopg2://postgres:postgres"
                            "@localhost/postgres")
