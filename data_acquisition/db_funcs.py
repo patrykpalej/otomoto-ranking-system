@@ -17,6 +17,7 @@ def create_table(base):
         link = Column("Link", String)
         longitude = Column("Longitude", Numeric)
         latitude = Column("Latitude", Numeric)
+        distance = Column("Distance", Numeric)
         offer_timestamp = Column("Offer timestamp", DateTime)
         scraping_timestamp = Column("Scraping timestamp", DateTime)
         overall = Column("Overall rating", Numeric)
@@ -49,6 +50,7 @@ def update_table(session, offer_class, values):
     offer.link = values["link"]
     offer.longitude = values["longitude"]
     offer.latitude = values["latitude"]
+    offer.distance = values["distance"]
     offer.offer_timestamp = values["offer_timestamp"]
     offer.scraping_timestamp = values["scraping_timestamp"]
     offer.overall = values["overall"]

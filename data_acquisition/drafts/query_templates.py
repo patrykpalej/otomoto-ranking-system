@@ -30,7 +30,7 @@ except:
 
 # 3. Read from database
 session = Session()
-db_output = read_from_table(session, Offers, "age", 3)
+db_output = read_from_table(session, Offers)
 print(db_output)
 
 # 4. Delete table

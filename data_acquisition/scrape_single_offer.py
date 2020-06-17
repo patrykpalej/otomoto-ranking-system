@@ -40,6 +40,7 @@ def scrape_single_offer(url):
 
     longitude = offer_soup.find("input", id="adMapData")['data-map-lon']
     latitude = offer_soup.find("input", id="adMapData")['data-map-lat']
+    distance = float(longitude) + float(latitude)
 
     pre_offer_timestamp = offer_soup.find_all(
         "span", class_="offer-meta__value")[0].text
@@ -58,6 +59,6 @@ def scrape_single_offer(url):
     return {"id": offer_id, "price": price, "prod_year": prod_year,
             "mileage": mileage, "fuel": fuel, "color": color,
             "brand": brand, "model": model, "link": url,
-            "longitude": longitude, "latitude": latitude,
+            "longitude": longitude, "latitude": latitude, "distance": distance,
             "offer_timestamp": offer_timestamp, "overall": 0,
             "scraping_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}

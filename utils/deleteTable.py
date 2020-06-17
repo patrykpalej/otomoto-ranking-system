@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from data_acquisition.functions.db_funcs import create_table, delete_table
+from data_acquisition.db_funcs import create_table, delete_table
 
 
 Base = declarative_base()
