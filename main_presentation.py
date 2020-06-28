@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -30,11 +31,14 @@ df_sorted = sort_by_rating(df_filtered)
 
 
 # 5. Write n best offers to file
-n = 5
+n = 10
 day = str(datetime.now().day)
 month = str(datetime.now().month)
 
-date = day + '-' + month
+date = month + '.' + day
+if not os.path.isdir(os.getcwd() + "/results/" + date):
+    os.mkdir(os.getcwd() + "/results/" + date)
 
 df_best = df_sorted.iloc[:5]
-df_best.to_csv('results/{}.csv'.format(date), sep=';')
+df_best.index = range(1, len(df_best)+1)
+df_best.to_csv('results/{}/{}.csv'.format(date, date), sep=';')
