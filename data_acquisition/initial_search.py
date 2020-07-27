@@ -15,4 +15,9 @@ def initial_search(url, filters, max_distance):
     distance_resp = requests.get(distance_url)
     initial_soup = BeautifulSoup(distance_resp.content, "html.parser")
 
+    n_of_offers = initial_soup.find("span",
+                                    class_="fleft tab selected")\
+        .find("span", class_="counter").text
+    # print("Number of offers" + str(n_of_offers))
+
     return initial_soup, distance_resp.url
