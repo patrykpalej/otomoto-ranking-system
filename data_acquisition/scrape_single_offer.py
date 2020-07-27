@@ -1,6 +1,9 @@
+import numpy as np
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+
+from data_acquisition.find_voivodeship import find_voivodeship
 
 
 def scrape_single_offer(url):
@@ -9,14 +12,30 @@ def scrape_single_offer(url):
     offer_soup = BeautifulSoup(offer_resp.text, "html.parser")
     # ----
 
-    offer_id = offer_soup.find_all("span", class_="offer-meta__value")[1].text
+    try:
+        offer_id = offer_soup.find_all("span", class_="offer-meta__value")[1].text
+    except:
+        return 0
 
-    price = int(offer_soup.find("span", class_="offer-price__number")
-                .text.replace(' ', '').replace("PLN\n", ""))
+    is_euro = 0
+    if 'EUR' in offer_soup.find("span", class_="offer-price__number").text:
+        is_euro = 1
+    price = int(float(offer_soup.find("span", class_="offer-price__number")
+                .text.replace(' ', '').replace("PLN\n", "").replace('EUR\n', '')
+                .replace(',', '.')))
+    if is_euro:
+        price = int(price * 4.3)
 
-    prod_year = offer_soup.find_all(
+    if "Firmy" in offer_soup.find("a", class_="offer-params__link").text:
+        owner = "Firma"
+    elif "prywat" in offer_soup.find("a", class_="offer-params__link").text:
+        owner = "Osoba prywatna"
+    else:
+        owner = "Inny"
+
+    prod_year = int(offer_soup.find_all(
         "span", class_="offer-main-params__item")[0].text.replace(' ', '')\
-        .replace('\n', '')
+        .replace('\n', ''))
 
     mileage = int(offer_soup.find_all("span", class_="offer-main-params__item")
                   [1].text.replace(' ', '').replace('\n', '')
@@ -29,6 +48,7 @@ def scrape_single_offer(url):
     for counter, item in enumerate(all_labels):
         if item.text == "Kolor":
             col_lab_id = counter
+            break
     color = offer_soup.find_all("div", class_="offer-params__value") \
         [col_lab_id].find("a").text.replace(' ', '').replace('\n', '')
 
@@ -38,9 +58,35 @@ def scrape_single_offer(url):
     model = offer_soup.find_all("a", class_="offer-params__link")[3].text\
         .replace(' ',  '').replace('\n', '')
 
-    longitude = offer_soup.find("input", id="adMapData")['data-map-lon']
-    latitude = offer_soup.find("input", id="adMapData")['data-map-lat']
-    distance = float(longitude) + float(latitude)
+    for counter, item in enumerate(all_labels):
+        if item.text == "Moc":
+            power_lab_id = counter
+            break
+    try:
+        power = int(offer_soup.find_all("div", class_="offer-params__value") \
+            [power_lab_id].text.replace(' ', '').replace('\n', '')\
+            .replace("KM", ""))
+    except:
+        power = -1
+
+    longitude = float(offer_soup.find("input", id="adMapData")['data-map-lon'])
+    latitude = float(offer_soup.find("input", id="adMapData")['data-map-lat'])
+    radius = 6371
+    angle_conv = 57.325
+    theta_1 = latitude / angle_conv
+    theta_2 = 50.1 / angle_conv
+    phi_1 = longitude / angle_conv
+    phi_2 = 20 / angle_conv
+
+    distance = round(2 * radius * \
+               np.arcsin(np.sqrt((np.sin((theta_2 - theta_1) / 2)) ** 2
+                                 + np.cos(theta_1) * np.cos(theta_2)
+                                 * (np.sin((phi_2 - phi_1) / 2)) ** 2)), 2)
+
+    pre_location \
+        = offer_soup.find("span",
+                          class_="seller-box__seller-address__label").text
+    location = find_voivodeship(pre_location)
 
     pre_offer_timestamp = offer_soup.find_all(
         "span", class_="offer-meta__value")[0].text
@@ -56,9 +102,10 @@ def scrape_single_offer(url):
     minute = int(pre_offer_timestamp[3:5])
     offer_timestamp = datetime(year, month, day, hour, minute)
 
-    return {"id": offer_id, "price": price, "prod_year": prod_year,
-            "mileage": mileage, "fuel": fuel, "color": color,
-            "brand": brand, "model": model, "link": url,
-            "longitude": longitude, "latitude": latitude, "distance": distance,
+    return {"id": offer_id, "price": price, "owner": owner,
+            "prod_year": prod_year, "mileage": mileage, "fuel": fuel,
+            "color": color, "brand": brand, "model": model, "power": power,
+            "link": url, "longitude": longitude, "latitude": latitude,
+            "distance": distance, "location": location,
             "offer_timestamp": offer_timestamp, "overall": 0,
             "scraping_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
