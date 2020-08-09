@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from data_acquisition.db_funcs import create_table, read_from_table
+from data_acquisition.db_funcs import create_tables, read_from_table
 from output_presentation.transform_raw_offers import transform_raw_offers
 from output_presentation.select_rows import select_rows
 from output_presentation.sort_by_rating import sort_by_rating
@@ -11,11 +11,11 @@ from output_presentation.sort_by_rating import sort_by_rating
 
 # 1. Read raw offers
 Base = declarative_base()
-Offers, engine = create_table(Base)
+Offers, MyOffers, engine = create_tables(Base)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-raw_offers = read_from_table(session, Offers)
+raw_offers = read_from_table(session, MyOffers)
 
 
 # 2. Transform raw offers into a df

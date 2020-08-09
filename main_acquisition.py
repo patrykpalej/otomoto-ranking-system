@@ -4,7 +4,8 @@ from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from data_acquisition.db_funcs import create_tables, delete_table
+from data_acquisition.db_funcs import create_tables, delete_table, \
+    read_from_table
 from data_acquisition.scraping_prepro import scraping_prepro
 from data_acquisition.initial_search import initial_search
 from data_acquisition.scrape_single_offer import scrape_single_offer
@@ -13,10 +14,18 @@ from data_acquisition.get_all_urls import get_all_urls
 from data_acquisition.write_to_db import write_to_db
 
 
-# I. Create table
+# I. Create table and get IDs already in database
 Base = declarative_base()
 Offers, MyOffers, engine = create_tables(Base)
 Session = sessionmaker(bind=engine)
+
+session = Session()
+db_offers = read_from_table(session, Offers)
+offers_ids = [off.offer_id for off in db_offers]
+
+session = Session()
+db_myoffers = read_from_table(session, MyOffers)
+myoffers_ids = [off.offer_id for off in db_myoffers]
 
 # -------
 # session = Session()
@@ -25,8 +34,8 @@ Session = sessionmaker(bind=engine)
 # -------
 
 # II. Get and save data
-# filters_json = json.load(open("data_acquisition/filters.json", "r"))
-filters_json = json.load(open("filters.json", "r"))
+filters_json = json.load(open("data_acquisition/filters.json", "r"))
+# filters_json = json.load(open("filters.json", "r"))
 for i, filters_set in enumerate(filters_json):
     # print("Start searching with a given filter")
     # print(datetime.now())
@@ -34,7 +43,8 @@ for i, filters_set in enumerate(filters_json):
     # 1. Initial actions
     url, filters, max_dist = scraping_prepro(filters_set)
     initial_soup, initial_url = initial_search(url, filters, max_dist)
-    offers_urls = get_all_urls(initial_soup)
+    scraped_ids = myoffers_ids if filters_set["my_offers"] else offers_ids
+    offers_urls = get_all_urls(initial_soup, scraped_ids)
 
     # print("Number of urls found: " + str(len(offers_urls)))
     # with open('found_urls.txt_{}.txt'.format(str(i)), 'w') as f:
@@ -47,14 +57,14 @@ for i, filters_set in enumerate(filters_json):
 
     # 2. Actual scraping
     offers_list = []
-    # invalid_offers = 0
+    invalid_offers = 0
     # invalid_urls = []
     # scraped_urls = []
     for single_offer_url in offers_urls:
         time.sleep(0.5)
         offer = scrape_single_offer(single_offer_url)
         if offer == 0:
-            # invalid_offers += 1
+            invalid_offers += 1
             # invalid_urls.append(single_offer_url)
             continue
 

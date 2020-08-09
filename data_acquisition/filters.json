@@ -1,11 +1,11 @@
 [
   {
-    "my_offers": 1,
-    "max_distance": 150,
+    "my_offers": 0,
+    "max_distance": 50,
     "brand": "",
     "model": "",
     "min_price": "8000",
-    "max_price": "20000",
+    "max_price": "16000",
     "min_year": "2005",
     "max_year": "2018",
     "min_mileage": "30000",
@@ -18,11 +18,11 @@
 
   {
     "my_offers": 1,
-    "max_distance": 150,
+    "max_distance": 50,
     "brand": "",
     "model": "",
     "min_price": "8000",
-    "max_price": "20000",
+    "max_price": "16000",
     "min_year": "2005",
     "max_year": "2018",
     "min_mileage": "30000",
