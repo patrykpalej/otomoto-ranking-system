@@ -56,7 +56,7 @@ def delete_table(session, table, engine):
 
 
 def delete_old_offers(session, table, max_offer_days):
-    session.query(table).filter(table.scraping_timestamp < datetime.now()
+    session.query(table).filter(table.offer_timestamp < datetime.now()
                                 - timedelta(days=14)).delete()
 
     session.commit()

@@ -1,6 +1,5 @@
 import time
 import json
-from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -27,6 +26,7 @@ session = Session()
 db_myoffers = read_from_table(session, MyOffers)
 myoffers_ids = [off.offer_id for off in db_myoffers]
 
+
 # II. Delete offers older than X
 max_offer_days = 14
 session = Session()
@@ -38,40 +38,24 @@ delete_old_offers(session, MyOffers, engine)
 # delete_table(session, MyOffers, engine)
 # -------
 
-
 # III. Get and save data
-# filters_json = json.load(open("data_acquisition/filters.json", "r"))
-filters_json = json.load(open("filters.json", "r"))
+filters_json = json.load(open("data_acquisition/filters.json", "r"))
+# filters_json = json.load(open("filters.json", "r"))
 for i, filters_set in enumerate(filters_json):
-    # print("Start searching with a given filter")
-    # print(datetime.now())
-
     # 1. Initial actions
     url, filters, max_dist = scraping_prepro(filters_set)
     initial_soup, initial_url = initial_search(url, filters, max_dist)
     scraped_ids = myoffers_ids if filters_set["my_offers"] else offers_ids
     offers_urls = get_all_urls(initial_soup, scraped_ids)
 
-    # print("Number of urls found: " + str(len(offers_urls)))
-    # with open('found_urls.txt_{}.txt'.format(str(i)), 'w') as f:
-    #     for item in offers_urls:
-    #         f.write("%s\n" % item)
-
-    # print('\n')
-    # print(initial_url)
-    # print('\n')
-
     # 2. Actual scraping
     offers_list = []
     invalid_offers = 0
-    # invalid_urls = []
-    # scraped_urls = []
     for single_offer_url in offers_urls:
         time.sleep(0.5)
         offer = scrape_single_offer(single_offer_url)
         if offer == 0:
             invalid_offers += 1
-            # invalid_urls.append(single_offer_url)
             continue
 
         if filters_set["my_offers"]:
@@ -80,28 +64,9 @@ for i, filters_set in enumerate(filters_json):
         if offer["distance"] <= filters_set["max_distance"] \
                 or not filters_set["my_offers"]:
             offers_list.append(offer)
-            # scraped_urls.append(offer['link'])
-
-    # print("Offers scraped. Number of offers: " + str(len(offers_list)))
-    # print("Number of invalid offers: " + str(invalid_offers))
-    # print(datetime.now())
-
-    # with open('invalid_urls_{}.txt'.format(str(i)), 'w') as f:
-    #     for item in invalid_urls:
-    #         f.write("%s\n" % item)
-    #
-    # with open('scraped_urls.txt_{}.txt'.format(str(i)), 'w') as f:
-    #     for item in scraped_urls:
-    #         f.write("%s\n" % item)
 
     # 3. Write scraped offers to database
     if filters_set["my_offers"]:
         write_to_db(Session, MyOffers, offers_list, 1)
     else:
         write_to_db(Session, Offers, offers_list, 0)
-
-    # print("Offers saved to db")
-    # print(datetime.now())
-    # print('\n')
-    # print('\n')
-    # print('\n')
