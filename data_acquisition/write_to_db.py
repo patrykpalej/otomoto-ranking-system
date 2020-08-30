@@ -4,10 +4,6 @@ import json
 
 def write_to_db(session_class, offers_class, offers_list, is_myoffers):
 
-    with open("offs.json", "w") as f:
-        json.dump([{"id": off["id"], "link": off["link"]}
-                   for off in offers_list], f)
-
     # invalid = 0
     for i, offer in enumerate(offers_list):
         try:

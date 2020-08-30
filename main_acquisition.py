@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 from data_acquisition.db_funcs import create_tables, delete_table, \
-    read_from_table
+    read_from_table, delete_old_offers
 from data_acquisition.scraping_prepro import scraping_prepro
 from data_acquisition.initial_search import initial_search
 from data_acquisition.scrape_single_offer import scrape_single_offer
@@ -27,15 +27,21 @@ session = Session()
 db_myoffers = read_from_table(session, MyOffers)
 myoffers_ids = [off.offer_id for off in db_myoffers]
 
+# II. Delete offers older than X
+max_offer_days = 14
+session = Session()
+delete_old_offers(session, MyOffers, engine)
+
 # -------
 # session = Session()
 # delete_table(session, Offers, engine)
 # delete_table(session, MyOffers, engine)
 # -------
 
-# II. Get and save data
-filters_json = json.load(open("data_acquisition/filters.json", "r"))
-# filters_json = json.load(open("filters.json", "r"))
+
+# III. Get and save data
+# filters_json = json.load(open("data_acquisition/filters.json", "r"))
+filters_json = json.load(open("filters.json", "r"))
 for i, filters_set in enumerate(filters_json):
     # print("Start searching with a given filter")
     # print(datetime.now())

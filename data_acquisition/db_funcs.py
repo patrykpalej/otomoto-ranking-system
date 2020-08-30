@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, \
     Numeric
 
@@ -52,7 +52,14 @@ def create_tables(base):
 def delete_table(session, table, engine):
     session.query(table).delete()
     session.commit()
+    session.close()
 
+
+def delete_old_offers(session, table, max_offer_days):
+    session.query(table).filter(table.scraping_timestamp < datetime.now()
+                                - timedelta(days=14)).delete()
+
+    session.commit()
     session.close()
 
 
