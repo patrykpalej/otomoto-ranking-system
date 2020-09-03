@@ -14,6 +14,6 @@ def draw_plot(backend_input1):
 
     if 2 in backend_input1:
         plot.add_trace(go.Scatter(x=[1, 2], y=[4, 3],
-                       marker=dict(color="black")))
+                       marker=dict(color="orange")))
 
     return plot

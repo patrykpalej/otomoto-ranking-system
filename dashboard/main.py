@@ -11,18 +11,30 @@ app.layout = frontend()
 
 
 @app.callback(
-     [Output(component_id='output_1', component_property='figure'),
-      Output(component_id='output_2', component_property='children')],
+     [Output(component_id="price_output", component_property="children"),
+      Output(component_id='price_output', component_property="style"),
+      Output(component_id="year_output", component_property="children"),
+      Output(component_id='year_output', component_property="style"),
+      Output(component_id="mileage_output", component_property="children"),
+      Output(component_id='mileage_output', component_property="style")],
 
-     [Input(component_id='input_1', component_property='value'),
-      Input(component_id='input_2', component_property='value')]
+     [Input(component_id="price_input_1", component_property="value"),
+      Input(component_id="price_input_2", component_property="value"),
+      Input(component_id="year_input_1", component_property="value"),
+      Input(component_id="year_input_2", component_property="value"),
+      Input(component_id="mileage_input_1", component_property="value"),
+      Input(component_id="mileage_input_2", component_property="value")]
 )
-def update_graphs(backend_input1, backend_input2):
+def update_dashboard(price_input_1, price_input_2, year_input_1, year_input_2,
+                     mileage_input_1, mileage_input_2):
 
-    [backend_output1, backend_output2] = backend(backend_input1,
-                                                 backend_input2)
+    [price_output, price_style_dict, year_output, year_style_dict,
+     mileage_output, mileage_style_dict] \
+        = backend(price_input_1, price_input_2, year_input_1, year_input_2,
+                  mileage_input_1, mileage_input_2)
 
-    return [backend_output1, backend_output2]
+    return [price_output, price_style_dict, year_output, year_style_dict,
+            mileage_output, mileage_style_dict]
 
 
 if __name__ == '__main__':
