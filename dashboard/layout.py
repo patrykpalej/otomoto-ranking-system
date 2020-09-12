@@ -102,42 +102,56 @@ def frontend(brand_options):
 
         # 2. Plots settings
         html.Div([
-            dcc.Dropdown(options=[],
-                         placeholder="",
+            dcc.Dropdown(options=[{"label": "Wykres punktowy", "value": 0},
+                                  {"label": "Wykres słupkowy", "value": 1},
+                                  {"label": "Mapa", "value": 2}],
+                         placeholder="Typ wykresu",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="",
+                         placeholder="Oś X",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="",
+                         placeholder="Oś Y",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="",
+                         placeholder="Kolor",
                          style={"left": "0%", "width": "60%"})
         ],
-            style={"left": "0%", "top": "36%", "position": "absolute",
+            style={"left": "5%", "top": "36%", "position": "absolute",
                    "display": "flex", "flex-direction": "row",
-                   "width": "50%", "justify-content": "flex-start"}
+                   "width": "40%", "justify-content": "flex-start"}
         ),
 
-        # html.Div([
-        #     dcc.Dropdown(style={"width": "12%", "left": "0", "top": "40%"}),
-        #     dcc.Dropdown(style={"width": "12%", "left": "12%", "top": "40%"}),
-        #     dcc.Dropdown(style={"width": "12%", "left": "24%", "top":
-        #         "40%"}), #],
-            # style={"left": "0%", "top": "40%", "position": "absolute",
-            #        "width": "45%"}
-        # ),
+        html.Div([
+            dcc.Dropdown(options=[{"label": "Wykres punktowy", "value": 0},
+                                  {"label": "Wykres słupkowy", "value": 1},
+                                  {"label": "Mapa", "value": 2}],
+                         placeholder="Typ wykresu",
+                         style={"left": "0%", "width": "60%"}),
+            dcc.Dropdown(options=[],
+                         placeholder="Oś X",
+                         style={"left": "0%", "width": "60%"}),
+            dcc.Dropdown(options=[],
+                         placeholder="Oś Y",
+                         style={"left": "0%", "width": "60%"}),
+            dcc.Dropdown(options=[],
+                         placeholder="Kolor",
+                         style={"left": "0%", "width": "60%"})
+        ],
+            style={"left": "60%", "top": "36%", "position": "absolute",
+                   "display": "flex", "flex-direction": "row",
+                   "width": "40%", "justify-content": "flex-start"}
+        ),
 
 
         # 3. Plots
         dcc.Graph(id="fig_1", figure={},
-                  style={"width": "50%", "height": "54%", "bottom": "1%",
-                         "position": "absolute", "left": "0%", "top": "46%"}),
+                  style={"width": "40%", "height": "60%", "position":
+                         "absolute", "left": "1%", "top": "42%"}),
 
         dcc.Graph(id="fig_2", figure={},
-                  style={"width": "50%", "height": "64%", "bottom": "1%",
-                         "position": "absolute", "left": "50%", "top": "46%"})
+                  style={"width": "40%", "height": "60%", "position":
+                         "absolute", "left": "55%", "top": "42%"})
 
     ])
 

@@ -1,6 +1,8 @@
 import pandas as pd
 
-from funcs import *
+from funcs_filters import *
+from funcs_plotsettings import *
+from funcs_plots import *
 
 
 def backend(price_input_1, price_input_2, year_input_1, year_input_2,
@@ -98,6 +100,10 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     n_of_offs = str(len(df))
     n_of_offs_out = "Wybrano ofert: " + n_of_offs
 
+    # II. Plots
+    fig_1 = create_plot(0, 0, [[1, 2], [2, 3]])
+    fig_2 = create_plot(0, 1, [[1, 2], [2, 3]])
+
     return [price_output, price_style_dict, year_output, year_style_dict,
             mileage_output, mileage_style_dict, power_output, power_style_dict,
-            fuel_output, brand_output, n_of_offs_out]
+            fuel_output, brand_output, n_of_offs_out, fig_1, fig_2]

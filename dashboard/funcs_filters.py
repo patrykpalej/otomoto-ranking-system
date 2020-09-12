@@ -1,7 +1,3 @@
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-
-
 def input_hint(hint_text, style_dict, input_1, input_2, min_limit, max_limit,
                error_message, unit, thousand_sep):
 

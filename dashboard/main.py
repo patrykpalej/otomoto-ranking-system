@@ -31,7 +31,9 @@ app.layout = frontend(brand_options)
       Output(component_id="power_output", component_property="style"),
       Output(component_id="fuel_output", component_property="children"),
       Output(component_id="brand_output", component_property="children"),
-      Output(component_id="n_of_offs_out", component_property="children")],
+      Output(component_id="n_of_offs_out", component_property="children"),
+      Output(component_id="fig_1", component_property="figure"),
+      Output(component_id="fig_2", component_property="figure")],
 
      [Input(component_id="price_input_1", component_property="value"),
       Input(component_id="price_input_2", component_property="value"),
@@ -50,14 +52,15 @@ def update_dashboard(price_input_1, price_input_2, year_input_1, year_input_2,
 
     [price_output, price_style_dict, year_output, year_style_dict,
      mileage_output, mileage_style_dict, power_output, power_style_dict,
-     fuel_output, brand_output, n_of_offs_out] \
+     fuel_output, brand_output, n_of_offs_out, fig_1, fig_2] \
         = backend(price_input_1, price_input_2, year_input_1, year_input_2,
                   mileage_input_1, mileage_input_2, power_input_1,
                   power_input_2, fuel_input, brand_input)
 
     return [price_output, price_style_dict, year_output, year_style_dict,
             mileage_output, mileage_style_dict, power_output,
-            power_style_dict, fuel_output, brand_output, n_of_offs_out]
+            power_style_dict, fuel_output, brand_output, n_of_offs_out, fig_1,
+            fig_2]
 
 
 if __name__ == '__main__':
