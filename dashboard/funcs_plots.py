@@ -60,3 +60,21 @@ def create_map(df, color):
     fig.for_each_trace(lambda t: t.update(mode="markers"))
 
     return fig
+
+
+def get_plot_type(in_0, in_1, in_2):
+    plot_type = None
+    if in_0 == 1:
+        if in_1 and in_2:
+            plot_type = 1  # scatterplot
+        elif bool(in_1) != bool(in_2):
+            plot_type = 2  # histogram
+    elif in_0 == 2:
+        if in_1 and in_2:
+            plot_type = 3  # boxplot
+        elif in_1 and not in_2:
+            plot_type = 4  # barplot
+    elif in_0 == 3:
+        plot_type = 5  # map
+
+    return plot_type

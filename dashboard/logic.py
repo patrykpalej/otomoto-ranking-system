@@ -113,52 +113,23 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     style_1_3 = base_style_dict.copy()
 
     # 2. Dropdown options
-    out_0_1, out_0_2, out_0_3, out_1_1, out_1_2, out_1_3 \
-        = [], [], [], [], [], []
     numerical_labels = ["Cena", "Przebieg", "Moc"]
-    categorical_labels = ["Rok", "Paliwo", "Marka"]
     numerical_values = ["Price", "Mileage", "Power"]
+    categorical_labels = ["Rok", "Paliwo", "Marka"]
     categorical_values = ["Year", "Fuel", "Brand"]
 
-    if in_0_0 == 1:
-        out_0_1 = [{"label": lab, "value": val}
-                   for lab, val in zip(numerical_labels, numerical_values)]
-        out_0_2 = [{"label": lab, "value": val}
-                   for lab, val in zip(numerical_labels, numerical_values)]
-        out_0_3 = [{"label": lab, "value": val}
-                   for lab, val in zip(numerical_labels, numerical_values)]
-    elif in_0_0 == 2:
-        out_0_1 = [{"label": lab, "value": val}
-                   for lab, val in zip(categorical_labels, categorical_values)]
-        out_0_2 = [{"label": lab, "value": val}
-                   for lab, val in zip(numerical_labels, numerical_values)]
-        out_0_3 = []
-        style_0_3["display"] = "none"
-
-    elif in_0_0 == 3:
-        out_0_1 = []
-        out_0_2 = []
-        out_0_3 = [{"label": lab, "value": val}
-                   for lab, val in zip(numerical_labels, numerical_values)]
-        style_0_1["display"] = "none"
-        style_0_2["display"] = "none"
+    out_0_1, out_0_2, out_0_3, style_0_1, style_0_2, style_0_3 \
+        = get_dropdown_options(in_0_0, style_0_1, style_0_2, style_0_3,
+                               numerical_labels, categorical_labels,
+                               numerical_values, categorical_values)
+    out_1_1, out_1_2, out_1_3, style_1_1, style_1_2, style_1_3 \
+        = get_dropdown_options(in_1_0, style_1_1, style_1_2, style_1_3,
+                               numerical_labels, categorical_labels,
+                               numerical_values, categorical_values)
 
     # III. Plots creation
-    plot_type_1 = None
-    if in_0_0 == 1:
-        if in_0_1 and in_0_2:
-            plot_type_1 = 1  # scatterplot
-        elif bool(in_0_1) != bool(in_0_2):
-            plot_type_1 = 2  # histogram
-    elif in_0_0 == 2:
-        if in_0_1 and in_0_2:
-            plot_type_1 = 3  # boxplot
-        elif in_0_1 and not in_0_2:
-            plot_type_1 = 4  # barplot
-    elif in_0_0 == 3:
-        plot_type_1 = 5  # map
-
-    plot_type_2 = in_1_0
+    plot_type_1 = get_plot_type(in_0_0, in_0_1, in_0_2)
+    plot_type_2 = get_plot_type(in_1_0, in_1_1, in_1_2)
 
     fig_1 = create_plot(plot_type_1, df, in_0_1, in_0_2, in_0_3)
     fig_2 = create_plot(plot_type_2, df, in_1_1, in_1_2, in_1_3)
@@ -169,7 +140,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     else:
         try:
             link_search_out = df["Link"].loc[int(link_search_in)]
-        except:
+        except ValueError:
             link_search_out = "Błędny numer id"
 
     return [price_output, price_style_dict, year_output, year_style_dict,

@@ -153,6 +153,7 @@ def frontend(brand_options):
                   style={"width": "40%", "height": "60%", "position":
                          "absolute", "left": "55%", "top": "42%"}),
 
+
         # 4. Link search
         html.Div(children=["Wpisz id oferty aby otrzymać link:"],
                  style={"position": "absolute", "left": "43%", "top": "70%",
