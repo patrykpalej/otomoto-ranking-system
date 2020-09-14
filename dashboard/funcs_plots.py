@@ -1,40 +1,62 @@
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 
-def create_plot(plot_type, graph_id, data):
+def create_plot(plot_type, df, x, y, color):
 
-    fig = px.line()
-
-    if plot_type == 0:
-        fig = create_scatter_plot(data)
-    elif plot_type == 1:
-        fig = create_bar_plot(data)
+    if plot_type == 1:
+        fig = create_scatterplot(df, x, y, color)
     elif plot_type == 2:
-        fig = create_map(data)
+        fig = create_histogram(df, x, y)
+    elif plot_type == 3:
+        fig = create_boxplot(df, x, y)
+    elif plot_type == 4:
+        fig = create_barplot(df, x)
+    elif plot_type == 5:
+        fig = create_map(df, color)
+    else:
+        fig = px.line()
 
     return fig
 
 
-def create_scatter_plot(data):
-
-    fig = px.line([0, 1], [0, 2])
-    fig = px.line()
-
-    return fig
-
-
-def create_bar_plot(data):
-
-    fig = px.line([0, 1], [0, 2])
-    fig = px.line()
+def create_scatterplot(df, x, y, color):
+    fig = px.scatter(df, x=x, y=y, color=color, text=df.index,
+                     color_continuous_scale="jet")
+    fig.for_each_trace(lambda t: t.update(mode="markers"))
 
     return fig
 
 
-def create_map(data):
+def create_histogram(df, x, y):
+    if x:
+        fig = px.histogram(df[x])
+    else:
+        fig = px.histogram(df[y])
 
-    fig = px.line([0, 1], [0, 2])
+    return fig
+
+
+def create_boxplot(df, x, y):
+    fig = px.box(df, x=x, y=y)
+
+    return fig
+
+
+def create_barplot(df, x):
+    df_group = df.groupby([x]).count()["id"].sort_values(ascending=False)
+    if x == "Brand":
+        df_group = df_group[:10]
+
+    fig = px.bar(x=df_group.index, y=df_group)
+
+    return fig
+
+
+def create_map(df, color):
+
+    fig = px.scatter_mapbox(df, lat="Latitude", lon="Longitude",
+                            color=color, zoom=5, color_continuous_scale="jet",
+                            mapbox_style="carto-positron", text=df.index)
+    fig.for_each_trace(lambda t: t.update(mode="markers"))
 
     return fig

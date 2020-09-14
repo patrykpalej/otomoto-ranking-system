@@ -102,19 +102,19 @@ def frontend(brand_options):
 
         # 2. Plots settings
         html.Div([
-            dcc.Dropdown(options=[{"label": "Wykres punktowy", "value": 0},
-                                  {"label": "Wykres słupkowy", "value": 1},
-                                  {"label": "Mapa", "value": 2}],
-                         placeholder="Typ wykresu",
+            dcc.Dropdown(options=[{"label": "Scatterplot", "value": 1},
+                                  {"label": "Boxplot", "value": 2},
+                                  {"label": "Mapa", "value": 3}],
+                         placeholder="Wykres", id="drop_0_0",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="Oś X",
+                         placeholder="Oś X", id="drop_0_1",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="Oś Y",
+                         placeholder="Oś Y", id="drop_0_2",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="Kolor",
+                         placeholder="Kolor", id="drop_0_3",
                          style={"left": "0%", "width": "60%"})
         ],
             style={"left": "5%", "top": "36%", "position": "absolute",
@@ -123,19 +123,19 @@ def frontend(brand_options):
         ),
 
         html.Div([
-            dcc.Dropdown(options=[{"label": "Wykres punktowy", "value": 0},
-                                  {"label": "Wykres słupkowy", "value": 1},
-                                  {"label": "Mapa", "value": 2}],
-                         placeholder="Typ wykresu",
+            dcc.Dropdown(options=[{"label": "Scatterplot", "value": 1},
+                                  {"label": "Boxplot", "value": 2},
+                                  {"label": "Mapa", "value": 3}],
+                         placeholder="Wykres", id="drop_1_0",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="Oś X",
+                         placeholder="Oś X", id="drop_1_1",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="Oś Y",
+                         placeholder="Oś Y", id="drop_1_2",
                          style={"left": "0%", "width": "60%"}),
             dcc.Dropdown(options=[],
-                         placeholder="Kolor",
+                         placeholder="Kolor", id="drop_1_3",
                          style={"left": "0%", "width": "60%"})
         ],
             style={"left": "60%", "top": "36%", "position": "absolute",
@@ -151,7 +151,19 @@ def frontend(brand_options):
 
         dcc.Graph(id="fig_2", figure={},
                   style={"width": "40%", "height": "60%", "position":
-                         "absolute", "left": "55%", "top": "42%"})
+                         "absolute", "left": "55%", "top": "42%"}),
+
+        # 4. Link search
+        html.Div(children=["Wpisz id oferty aby otrzymać link:"],
+                 style={"position": "absolute", "left": "43%", "top": "70%",
+                        "font-family": "Cambria", "width": "10%",
+                        "height": "5%"}),
+        dcc.Input(id="link_search_in",
+                  style={"position": "absolute", "left": "43%", 
+                         "top": "76%", "width": "8%"}),
+        html.Div(id="link_search_out", children=[],
+                 style={"position": "absolute", "left": "43%", "top": "80%",
+                        "width": "12%"})
 
     ])
 
