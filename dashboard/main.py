@@ -94,4 +94,4 @@ def update_dashboard(price_input_1, price_input_2, year_input_1, year_input_2,
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8052)

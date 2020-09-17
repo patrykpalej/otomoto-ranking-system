@@ -1,0 +1,1 @@
+"E:\Anaconda\python.exe" "C:\Users\Patryk\Dropbox\Dev\Otomoto Ranking System\dashboard\main.py"

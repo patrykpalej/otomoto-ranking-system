@@ -1,16 +1,20 @@
+import numpy as np
+import pandas as pd
 import plotly.express as px
 
 
 def create_plot(plot_type, df, x, y, color):
 
+    dictionary = {"Price": "Cena", "Mileage": "Przebieg", "Power": "Moc",
+                  "Year": "Rok", "Fuel": "Paliwo", "Brand": "Marka"}
     if plot_type == 1:
-        fig = create_scatterplot(df, x, y, color)
+        fig = create_scatterplot(df, x, y, color, dictionary)
     elif plot_type == 2:
-        fig = create_histogram(df, x, y)
+        fig = create_histogram(df, x, y, dictionary)
     elif plot_type == 3:
-        fig = create_boxplot(df, x, y)
+        fig = create_boxplot(df, x, y, dictionary)
     elif plot_type == 4:
-        fig = create_barplot(df, x)
+        fig = create_barplot(df, x, dictionary)
     elif plot_type == 5:
         fig = create_map(df, color)
     else:
@@ -19,35 +23,48 @@ def create_plot(plot_type, df, x, y, color):
     return fig
 
 
-def create_scatterplot(df, x, y, color):
+def create_scatterplot(df, x, y, color, dictionary):
     fig = px.scatter(df, x=x, y=y, color=color, text=df.index,
-                     color_continuous_scale="jet")
+                     color_continuous_scale="jet",
+                     labels={x: dictionary[x], y: dictionary[y]})
     fig.for_each_trace(lambda t: t.update(mode="markers"))
 
     return fig
 
 
-def create_histogram(df, x, y):
+def create_histogram(df, x, y, dictionary):
     if x:
-        fig = px.histogram(df[x])
+        fig = px.histogram(df[x], labels={"value": dictionary[x],
+                                          "count": "Liczba ofert"})
     else:
-        fig = px.histogram(df[y])
+        fig = px.histogram(df[y], labels={"value": dictionary[y],
+                                          "count": "Liczba ofert"})
 
     return fig
 
 
-def create_boxplot(df, x, y):
-    fig = px.box(df, x=x, y=y)
-
-    return fig
-
-
-def create_barplot(df, x):
-    df_group = df.groupby([x]).count()["id"].sort_values(ascending=False)
+def create_boxplot(df, x, y, dictionary):
     if x == "Brand":
-        df_group = df_group[:10]
+        popular_brands = list(df["Brand"].value_counts()[:10].index)
+        df["Brand"] \
+            = pd.Series(np.where(df['Brand'].isin(popular_brands), df['Brand'],
+                                 "Inne"))
 
-    fig = px.bar(x=df_group.index, y=df_group)
+    fig = px.box(df, x=x, y=y, labels={x: dictionary[x], y: dictionary[y]})
+
+    return fig
+
+
+def create_barplot(df, x, dictionary):
+    if x == "Brand":
+        popular_brands = list(df["Brand"].value_counts()[:10].index)
+        df["Brand"] \
+            = pd.Series(np.where(df['Brand'].isin(popular_brands), df['Brand'],
+                                 "Inne"))
+    df = df.groupby([x]).count()["id"].sort_values(ascending=False)
+
+    fig = px.bar(x=df.index, y=df,
+                 labels={"x": dictionary[x], "y": "Liczba ofert"})
 
     return fig
 
