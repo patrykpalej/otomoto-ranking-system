@@ -10,10 +10,18 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
             fuel_input, brand_input, in_0_0, in_0_1, in_0_2, in_0_3, in_1_0,
             in_1_1, in_1_2, in_1_3, link_search_in):
 
+    df = pd.read_csv("offers.csv", sep=';')
+    min_price = min(df["Price"])
+    max_price = max(df["Price"])
+    min_year = min(df["Year"])
+    max_year = max(df["Year"])
+    min_mil = int(min(df["Mileage"]))
+    max_mil = int(max(df["Mileage"]))
+    min_power = int(min(df["Power"]))
+    max_power = int(max(df["Power"]))
+
     # I. Filters
     # 1. Price
-    min_price = 2000
-    max_price = 80000
     price_output = "Cena: "
     price_style_dict = {"width": "15%", "position": "absolute", "left": "1%",
                         "top": "13%", "height": "10%", "font-size": 18,
@@ -26,8 +34,6 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
                      1)
 
     # 2. Production year
-    min_year = 2000
-    max_year = 2019
     year_output = "Rok produkcji: "
     year_style_dict = {"width": "15%", "position": "absolute", "left": "18%",
                        "top": "13%", "height": "10%", "font-size": 18,
@@ -39,8 +45,6 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
                      year_input_2, min_year, max_year, error_message, "", 0)
 
     # 3. Mileage
-    min_mil = int(1e4)
-    max_mil = int(1e6)
     mileage_output = "Przebieg: "
     mileage_style_dict = {"width": "15%", "position": "absolute",
                           "left": "37%", "top": "13%", "height": "10%",
@@ -53,8 +57,6 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
                      1)
 
     # 4. Power
-    min_power = 80
-    max_power = 300
     power_output = "Moc: "
     power_style_dict = {"width": "15%", "position": "absolute",
                         "left": "56%", "top": "13%", "height": "10%",
