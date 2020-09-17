@@ -142,7 +142,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     else:
         try:
             link_search_out = df["Link"].loc[int(link_search_in)]
-        except ValueError:
+        except:
             link_search_out = "Błędny numer id"
 
     return [price_output, price_style_dict, year_output, year_style_dict,
