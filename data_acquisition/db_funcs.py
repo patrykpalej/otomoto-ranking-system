@@ -37,6 +37,8 @@ def create_tables(base):
         fuel = Column("Fuel", String)
         power = Column("Power", Integer)
         link = Column("Link", String)
+        longitude = Column("Longitude", Numeric)
+        latitude = Column("Latitude", Numeric)
         distance = Column("Distance", Numeric)
         offer_timestamp = Column("Offer timestamp", DateTime)
         scraping_timestamp = Column("Scraping timestamp", DateTime)
@@ -102,6 +104,8 @@ def update_table(session, offers_class, values, is_myoffers):
         myoffer.fuel = values["fuel"]
         myoffer.power = values["power"]
         myoffer.link = values["link"]
+        myoffer.longitude = values["longitude"]
+        myoffer.latitude = values["latitude"]
         myoffer.distance = values["distance"]
         myoffer.offer_timestamp = values["offer_timestamp"]
         myoffer.scraping_timestamp = values["scraping_timestamp"]

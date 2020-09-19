@@ -39,8 +39,8 @@ delete_old_offers(session, MyOffers, engine)
 # -------
 
 # III. Get and save data
-filters_json = json.load(open("data_acquisition/filters.json", "r"))
-# filters_json = json.load(open("filters.json", "r"))
+filters_json = json.load(open("data_acquisition/filters.json", "r"))  # cmd
+# filters_json = json.load(open("filters.json", "r"))  # pycharm
 for i, filters_set in enumerate(filters_json):
     # 1. Initial actions
     url, filters, max_dist = scraping_prepro(filters_set)
