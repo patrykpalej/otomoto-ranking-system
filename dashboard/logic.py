@@ -11,6 +11,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
             in_1_1, in_1_2, in_1_3, link_search_in):
 
     df = pd.read_csv("offers.csv", sep=';')
+
     min_price = min(df["Price"])
     max_price = max(df["Price"])
     min_year = min(df["Year"])
@@ -24,7 +25,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 1. Price
     price_output = "Cena: "
     price_style_dict = {"width": "15%", "position": "absolute", "left": "1%",
-                        "top": "13%", "height": "10%", "font-size": 18,
+                        "top": "5%", "height": "10%", "font-size": 18,
                         "font-family": "Cambria"}
     error_message = "Minimalna cena jest większa od maksymalnej"
 
@@ -33,10 +34,19 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
                      price_input_2, min_price, max_price, error_message, "zł",
                      1)
 
+    ph_1_1 = "Min. cena (od {})".format(min_price)
+    ph_1_2 = "Max. cena (od {})".format(max_price)
+    ph_2_1 = "Min. rok produkcji (od {})".format(min_year)
+    ph_2_2 = "Max. rok produkcji (od {})".format(max_year)
+    ph_3_1 = "Min. przebieg (od {})".format(min_mil)
+    ph_3_2 = "Max. przebieg (od {})".format(max_mil)
+    ph_4_1 = "Min. moc (od {})".format(min_power)
+    ph_4_2 = "Max. moc (od {})".format(max_power)
+
     # 2. Production year
     year_output = "Rok produkcji: "
     year_style_dict = {"width": "15%", "position": "absolute", "left": "18%",
-                       "top": "13%", "height": "10%", "font-size": 18,
+                       "top": "5%", "height": "10%", "font-size": 18,
                        "font-family": "Cambria"}
     error_message = "Minimalny rok produkcji jest większy od maksymalnego"
 
@@ -47,7 +57,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 3. Mileage
     mileage_output = "Przebieg: "
     mileage_style_dict = {"width": "15%", "position": "absolute",
-                          "left": "37%", "top": "13%", "height": "10%",
+                          "left": "37%", "top": "5%", "height": "10%",
                           "font-size": 18, "font-family": "Cambria"}
     error_message = "Minimalny przebieg jest większy od maksymalnego"
 
@@ -59,7 +69,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 4. Power
     power_output = "Moc: "
     power_style_dict = {"width": "15%", "position": "absolute",
-                        "left": "56%", "top": "13%", "height": "10%",
+                        "left": "56%", "top": "5%", "height": "10%",
                         "font-size": 18, "font-family": "Cambria"}
     error_message = "Minimalna moc jest większa od maksymalnej"
 
@@ -145,9 +155,10 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
         except:
             link_search_out = "Błędny numer id"
 
-    return [price_output, price_style_dict, year_output, year_style_dict,
-            mileage_output, mileage_style_dict, power_output, power_style_dict,
-            fuel_output, brand_output, n_of_offs_out, out_0_1,
-            out_0_2, out_0_3, out_1_1, out_1_2, out_1_3, style_0_1, style_0_2,
-            style_0_3, style_1_1, style_1_2, style_1_3, fig_1, fig_2,
-            link_search_out]
+    return [price_output, price_style_dict, ph_1_1, ph_1_2, year_output,
+            year_style_dict, ph_2_1, ph_2_2, mileage_output,
+            mileage_style_dict, ph_3_1, ph_3_2, power_output,
+            power_style_dict, ph_4_1, ph_4_2, fuel_output, brand_output,
+            n_of_offs_out, out_0_1, out_0_2, out_0_3, out_1_1, out_1_2,
+            out_1_3, style_0_1, style_0_2, style_0_3, style_1_1, style_1_2,
+            style_1_3, fig_1, fig_2, link_search_out]
