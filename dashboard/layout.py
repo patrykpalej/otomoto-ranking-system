@@ -57,7 +57,7 @@ def frontend(brand_options):
 
         # e) Fuel
         html.Div(id="fuel_output", children=[],
-                 style={"left": "72%", "position": "absolute", "top": "5%",
+                 style={"left": "72%", "position": "absolute", "top": "2%",
                         "height": "10%", "font-size": 18, "font-family":
                             "Cambria"}),
 
@@ -71,7 +71,7 @@ def frontend(brand_options):
 
         # f) Brand
         html.Div(id="brand_output", children=[],
-                 style={"left": "82%", "position": "absolute", "top": "5%",
+                 style={"left": "82%", "position": "absolute", "top": "2%",
                         "height": "10%", "font-size": 18, "font-family":
                             "Cambria"}),
 

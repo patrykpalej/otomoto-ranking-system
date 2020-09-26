@@ -1,6 +1,9 @@
 import dash
 import pandas as pd
 from dash.dependencies import Input, Output
+from db_funcs import create_tables
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 from layout import frontend
 from logic import backend
@@ -9,7 +12,16 @@ from logic import backend
 app = dash.Dash(__name__)
 
 # 0. Prepare
-df = pd.read_csv("offers.csv", sep=';', usecols=["Brand"])
+Base = declarative_base()
+Offers, MyOffers, engine = create_tables(Base)
+Session = sessionmaker(bind=engine)
+session = Session()
+output = session.query(MyOffers).all()
+session.close()
+brands_list = [off.brand for off in output]
+df = pd.DataFrame({"Brand": brands_list})
+
+# df = pd.read_csv("offers.csv", sep=';', usecols=["Brand"])
 common_brands = df["Brand"].value_counts().index[:10]
 brand_options = [{"label": "Wszystkie", "value": "wszystkie"}]
 for x in common_brands:

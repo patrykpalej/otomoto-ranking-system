@@ -1,4 +1,8 @@
 import pandas as pd
+from db_funcs import create_tables
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
 
 from funcs_filters import *
 from funcs_plotsettings import *
@@ -10,7 +14,23 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
             fuel_input, brand_input, in_0_0, in_0_1, in_0_2, in_0_3, in_1_0,
             in_1_1, in_1_2, in_1_3, link_search_in):
 
-    df = pd.read_csv("offers.csv", sep=';')
+    Base = declarative_base()
+    Offers, MyOffers, engine = create_tables(Base)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    output = session.query(MyOffers).all()
+    session.close()
+    # brands_list = [off.brand for off in output]
+    df = pd.DataFrame({"Price": [int(off.price) for off in output],
+                       "Year": [off.prod_year for off in output],
+                       "Mileage": [off.mileage for off in output],
+                       "Power": [int(off.power) for off in output],
+                       "Fuel": [off.fuel for off in output],
+                       "Brand": [off.brand for off in output],
+                       "Link": [off.link for off in output]})
+    df = df[df["Power"] > 0]
+
+    # df = pd.read_csv("offers.csv", sep=';')
 
     min_price = min(df["Price"])
     max_price = max(df["Price"])
@@ -25,7 +45,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 1. Price
     price_output = "Cena: "
     price_style_dict = {"width": "15%", "position": "absolute", "left": "1%",
-                        "top": "5%", "height": "10%", "font-size": 18,
+                        "top": "2%", "height": "10%", "font-size": 18,
                         "font-family": "Cambria"}
     error_message = "Minimalna cena jest większa od maksymalnej"
 
@@ -46,7 +66,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 2. Production year
     year_output = "Rok produkcji: "
     year_style_dict = {"width": "15%", "position": "absolute", "left": "18%",
-                       "top": "5%", "height": "10%", "font-size": 18,
+                       "top": "2%", "height": "10%", "font-size": 18,
                        "font-family": "Cambria"}
     error_message = "Minimalny rok produkcji jest większy od maksymalnego"
 
@@ -57,7 +77,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 3. Mileage
     mileage_output = "Przebieg: "
     mileage_style_dict = {"width": "15%", "position": "absolute",
-                          "left": "37%", "top": "5%", "height": "10%",
+                          "left": "37%", "top": "2%", "height": "10%",
                           "font-size": 18, "font-family": "Cambria"}
     error_message = "Minimalny przebieg jest większy od maksymalnego"
 
@@ -69,7 +89,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     # 4. Power
     power_output = "Moc: "
     power_style_dict = {"width": "15%", "position": "absolute",
-                        "left": "56%", "top": "5%", "height": "10%",
+                        "left": "56%", "top": "2%", "height": "10%",
                         "font-size": 18, "font-family": "Cambria"}
     error_message = "Minimalna moc jest większa od maksymalnej"
 
@@ -87,8 +107,6 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
         brand_output += brand_input
 
     # 7. Number of offers
-    df = pd.read_csv("offers.csv", sep=";")
-
     if price_input_1:
         df = df[df["Price"] >= int(price_input_1)]
     if price_input_2:
@@ -110,6 +128,7 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     if brand_input != "wszystkie":
         df = df[df["Brand"] == brand_input]
 
+    print(min(df["Power"]))
     n_of_offs = str(len(df))
     n_of_offs_out = "Wybrano ofert: " + n_of_offs
 

@@ -8,7 +8,7 @@ def calculate_overall_rating(offer):
 
     # Owner
     if offer["owner"] == "Firma":
-        overall = overall * 0.7
+        overall = overall * 0.8
 
     # Fuel
     if offer["fuel"] == "Benzyna+LPG":
