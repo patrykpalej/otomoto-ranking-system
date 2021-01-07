@@ -12,10 +12,10 @@ def scraping_prepro(filters_json):
         
         "search[filter_float_year:from]": filters_json["min_year"],
         "search[filter_float_year:to]": filters_json["max_year"],
-        
+
         "search[filter_float_mileage:from]": filters_json["min_mileage"],
         "search[filter_float_mileage:to]": filters_json["max_mileage"],
-        
+
         "search[filter_enum_fuel_type]": filters_json["fuel_type"],
 
         "search[filter_enum_has_vin]": filters_json["has_vin"],

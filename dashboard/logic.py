@@ -27,6 +27,8 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
                        "Power": [int(off.power) for off in output],
                        "Fuel": [off.fuel for off in output],
                        "Brand": [off.brand for off in output],
+                       "Longitude": [off.longitude for off in output],
+                       "Latitude": [off.latitude for off in output],
                        "Link": [off.link for off in output]})
     df = df[df["Power"] > 0]
 
@@ -128,7 +130,6 @@ def backend(price_input_1, price_input_2, year_input_1, year_input_2,
     if brand_input != "wszystkie":
         df = df[df["Brand"] == brand_input]
 
-    print(min(df["Power"]))
     n_of_offs = str(len(df))
     n_of_offs_out = "Wybrano ofert: " + n_of_offs
 

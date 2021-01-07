@@ -1,6 +1,6 @@
 [
 
-{
+  {
     "my_offers": 1,
     "max_distance": 150,
     "brand": "",
@@ -32,28 +32,13 @@
     "has_vin": "1",
     "damaged": "0",
     "no_accident": "1"	
-  },	
-	
-  {
-    "my_offers": 0,
-    "max_distance": 700,
-    "brand": "",
-    "model": "",
-    "min_price": "2000",
-    "max_price": "80000",
-    "min_year": "2005",
-    "max_year": "2019",
-    "min_mileage": "30000",
-    "max_mileage": "500000",
-    "fuel_type": "Benzyna",
-    "has_vin": "1",
-    "damaged": "0",
-    "no_accident": "1"	
   },
-  
+
+
+
   {
     "my_offers": 0,
-    "max_distance": 700,
+    "max_distance": 600,
     "brand": "",
     "model": "",
     "min_price": "2000",
@@ -62,7 +47,7 @@
     "max_year": "2019",
     "min_mileage": "30000",
     "max_mileage": "500000",
-    "fuel_type": "Benzyna+LPG",
+    "fuel_type": "petrol-lpg",
     "has_vin": "1",
     "damaged": "0",
     "no_accident": "1"	
@@ -70,7 +55,7 @@
 
   {
     "my_offers": 0,
-    "max_distance": 700,
+    "max_distance": 600,
     "brand": "",
     "model": "",
     "min_price": "2000",
@@ -79,7 +64,24 @@
     "max_year": "2019",
     "min_mileage": "30000",
     "max_mileage": "500000",
-    "fuel_type": "Diesel",
+    "fuel_type": "petrol",
+    "has_vin": "1",
+    "damaged": "0",
+    "no_accident": "1"	
+  },
+
+  {
+    "my_offers": 0,
+    "max_distance": 600,
+    "brand": "",
+    "model": "",
+    "min_price": "2000",
+    "max_price": "80000",
+    "min_year": "2005",
+    "max_year": "2019",
+    "min_mileage": "30000",
+    "max_mileage": "500000",
+    "fuel_type": "diesel",
     "has_vin": "1",
     "damaged": "0",
     "no_accident": "1"	

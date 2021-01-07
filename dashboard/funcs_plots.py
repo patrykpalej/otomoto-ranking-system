@@ -61,7 +61,7 @@ def create_barplot(df, x, dictionary):
         df["Brand"] \
             = pd.Series(np.where(df['Brand'].isin(popular_brands), df['Brand'],
                                  "Inne"))
-    df = df.groupby([x]).count()["id"].sort_values(ascending=False)
+    df = df.groupby([x]).count()["Link"].sort_values(ascending=False)
 
     fig = px.bar(x=df.index, y=df,
                  labels={"x": dictionary[x], "y": "Liczba ofert"})

@@ -1,5 +1,6 @@
 import time
 import json
+from datetime import datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -37,23 +38,31 @@ delete_old_offers(session, MyOffers, engine)
 # delete_table(session, Offers, engine)
 # delete_table(session, MyOffers, engine)
 # -------
-
 # III. Get and save data
-filters_json = json.load(open("data_acquisition/filters.json", "r"))  # cmd
-# filters_json = json.load(open("filters.json", "r"))  # pycharm
+try:
+    filters_json = json.load(open("data_acquisition/filters.json", "r"))  # cmd
+except FileNotFoundError:
+    filters_json = json.load(open("filters.json", "r"))  # pycharm
+
 for i, filters_set in enumerate(filters_json):
     # 1. Initial actions
     url, filters, max_dist = scraping_prepro(filters_set)
     initial_soup, initial_url = initial_search(url, filters, max_dist)
     scraped_ids = myoffers_ids if filters_set["my_offers"] else offers_ids
     offers_urls = get_all_urls(initial_soup, scraped_ids)
-
+    print(initial_url)
     # 2. Actual scraping
     offers_list = []
     invalid_offers = 0
-    for single_offer_url in offers_urls:
-        time.sleep(0.5)
-        offer = scrape_single_offer(single_offer_url)
+
+    start_time = datetime.now()
+    for i, single_offer_url in enumerate(offers_urls):
+        time.sleep(0.2)
+        try:
+            offer = scrape_single_offer(single_offer_url)
+        except:
+            print("Offer parse error")
+
         if offer == 0:
             invalid_offers += 1
             continue
@@ -64,6 +73,11 @@ for i, filters_set in enumerate(filters_json):
         if offer["distance"] <= filters_set["max_distance"] \
                 or not filters_set["my_offers"]:
             offers_list.append(offer)
+
+        print(str(i) + "/" + str(len(offers_urls)))
+
+    end_time = datetime.now()
+    print(end_time - start_time)
 
     # 3. Write scraped offers to database
     if filters_set["my_offers"]:

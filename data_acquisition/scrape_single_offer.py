@@ -37,9 +37,12 @@ def scrape_single_offer(url):
         "span", class_="offer-main-params__item")[0].text.replace(' ', '')\
         .replace('\n', ''))
 
-    mileage = int(offer_soup.find_all("span", class_="offer-main-params__item")
-                  [1].text.replace(' ', '').replace('\n', '')
-                  .replace('km', ''))
+    try:
+        mileage = int(offer_soup.find_all("span", class_="offer-main-params__item")
+                      [1].text.replace(' ', '').replace('\n', '')
+                      .replace('km', ''))
+    except:
+        pass
 
     fuel = offer_soup.find_all("span", class_="offer-main-params__item")[2]\
         .text.replace(' ', '').replace('\n', '')
