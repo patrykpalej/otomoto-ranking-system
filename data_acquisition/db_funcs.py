@@ -47,7 +47,7 @@ def create_tables(base):
         overall = Column("Overall rating", Numeric)
 
     engine = create_engine("postgresql+psycopg2://postgres:postgres"
-                           "@mydbs.cjkpvohborum.eu-central-1.rds.amazonaws.com/otomoto")
+                           "@localhost/otomoto")
     base.metadata.create_all(bind=engine)
 
     return Offers, MyOffers, engine
